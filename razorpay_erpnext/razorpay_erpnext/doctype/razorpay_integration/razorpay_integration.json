@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-16 20:43:01.967592",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "razorpay_api_id",
+  "razorpay_api_secret",
+  "razorpay_webhook_secret"
+ ],
+ "fields": [
+  {
+   "fieldname": "razorpay_api_id",
+   "fieldtype": "Password",
+   "label": "RAZORPAY API ID"
+  },
+  {
+   "fieldname": "razorpay_api_secret",
+   "fieldtype": "Password",
+   "label": "RAZORPAY API SECRET"
+  },
+  {
+   "fieldname": "razorpay_webhook_secret",
+   "fieldtype": "Password",
+   "label": "RAZORPAY WEBHOOK SECRET"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-02-16 20:44:30.119634",
+ "modified_by": "Administrator",
+ "module": "Razorpay ERPNext",
+ "name": "Razorpay integration",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

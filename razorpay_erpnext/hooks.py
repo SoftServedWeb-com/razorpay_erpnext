@@ -83,7 +83,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "razorpay_erpnext.install.before_install"
-# after_install = "razorpay_erpnext.install.after_install"
+after_install = "razorpay_erpnext.setup.setup_razorpay_erpnext"
 
 # Uninstallation
 # ------------
@@ -129,9 +129,9 @@ app_license = "mit"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Sales Invoice": "razorpay_erpnext.custom_doctype.sales_invoice.RazorpaySalesInvoice"
+}
 
 # Document Events
 # ---------------

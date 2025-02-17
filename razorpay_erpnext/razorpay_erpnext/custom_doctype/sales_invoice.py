@@ -1,15 +1,26 @@
 from healthcare.healthcare.custom_doctype.sales_invoice import HealthcareSalesInvoice
 import razorpay
 import frappe
+from erpnext.accounts.general_ledger import make_gl_entries
+
 # Override the Sales Invoice class from healthcare module (since the healthcare already has a Sales Invoice Override class)
 class RazorpaySalesInvoice(HealthcareSalesInvoice):
-    def after_insert(self):
+    def on_submit(self):
         try:
-            super().after_insert() # Call the existing after_insert method from the parent class
+            super().on_submit() # Call the existing after_insert method from the parent class
         except:
             pass
-        if(self.is_razorpay): # check if the sales invoice is marked for Razorpay payment
+        if(self.is_razorpay):
             self.generate_payment_link()
+        # if(self.is_pos): # check if the invoice is a POS invoice
+        #     config = frappe.get_doc("Razorpay integration")
+        #     # Check if the POS service is RP (Razorpay)
+        #     if(self.pos_profile == config.razorpay_pos_profile):
+        #         pos_profile = frappe.get_doc("POS Profile",self.pos_profile)
+        #         for method in pos_profile.payments:
+        #             if method.mode_of_payment == config.mode_of_payment: # checks against the razorpay integration settings
+        #                 self.generate_payment_link()
+        #                 break
         
     def generate_payment_link(self):
         try:
@@ -62,9 +73,6 @@ class RazorpaySalesInvoice(HealthcareSalesInvoice):
             "customer": customer_contact,
             "notify": notify,
             "reminder_enable": True,
-            "notes": {
-                "policy_name": "Jeevan Bima"
-            },
         })
 
         # Save the payment link to Razorpay Payment Transaction
@@ -78,5 +86,4 @@ class RazorpaySalesInvoice(HealthcareSalesInvoice):
         # Update the Sales Invoice with the transaction details
         self.razorpay_payment_transaction = transaction.name
         self.save()
-        
         

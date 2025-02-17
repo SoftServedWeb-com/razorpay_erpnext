@@ -7,7 +7,11 @@
  "field_order": [
   "razorpay_api_id",
   "razorpay_api_secret",
-  "razorpay_webhook_secret"
+  "razorpay_webhook_secret",
+  "column_break_apgc",
+  "pos_profile",
+  "payment_mode",
+  "razorpay_account"
  ],
  "fields": [
   {
@@ -24,12 +28,34 @@
    "fieldname": "razorpay_webhook_secret",
    "fieldtype": "Password",
    "label": "RAZORPAY WEBHOOK SECRET"
+  },
+  {
+   "fieldname": "column_break_apgc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pos_profile",
+   "fieldtype": "Link",
+   "label": "POS_PROFILE",
+   "options": "POS Profile"
+  },
+  {
+   "fieldname": "payment_mode",
+   "fieldtype": "Link",
+   "label": "PAYMENT_MODE",
+   "options": "Mode of Payment"
+  },
+  {
+   "fieldname": "razorpay_account",
+   "fieldtype": "Link",
+   "label": "RAZORPAY_ACCOUNT",
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-16 20:44:30.119634",
+ "modified": "2025-02-18 00:27:18.650650",
  "modified_by": "Administrator",
  "module": "Razorpay ERPNext",
  "name": "Razorpay integration",

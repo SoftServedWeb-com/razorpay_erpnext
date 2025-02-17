@@ -57,7 +57,11 @@ def handle_payment():
             doc = frappe.get_doc("Sales Invoice", invoice[0].name)
             # Update payment details
             doc.db_set("status", "Paid",commit=True)
-            doc.db_set('docstatus', 1, commit=True)
+            doc.db_set("outstanding_amount", 0, commit=True)\
+            
+            # Process GL Entries
+            process_gl_entries(doc,config.razorpay_account)
+            # doc.db_set('docstatus', 1, commit=True) # it should generate after submit
             doc.submit()
         else:
             print(f"Sales Invoice not found for Razorpay Payment ID: {payment_id}")
@@ -65,3 +69,34 @@ def handle_payment():
     else:
         print("Unknown event")
     return {"status": "success"}
+
+def process_gl_entries(invoice, razorpay_account):
+    from erpnext.accounts.general_ledger import make_gl_entries
+    gl_entries = []
+
+    # Credit the Receivable Account (Customer's account to reduce outstanding)
+    gl_entries.append(invoice.get_gl_dict({
+        "account": invoice.debit_to,  # This is the receivable account from Sales Invoice
+        "party_type": "Customer",
+        "party": invoice.customer,
+        "credit": invoice.paid_amount,
+        "credit_in_account_currency": invoice.paid_amount,
+        "against_voucher": invoice.name,
+        "against_voucher_type": "Sales Invoice",
+        "cost_center": invoice.cost_center,
+        "company": invoice.company
+    }))
+
+    # Debit the Razorpay Account (Bank/Payment gateway account)
+    gl_entries.append(invoice.get_gl_dict({
+        "account": razorpay_account,
+        "debit": invoice.paid_amount,
+        "debit_in_account_currency": invoice.paid_amount,
+        "against": invoice.customer,
+        "cost_center": invoice.cost_center,
+        "company": invoice.company
+    }))
+
+    # Create GL Entries (ensure entries are balanced)
+    make_gl_entries(gl_entries, cancel=False, update_outstanding='No')
+

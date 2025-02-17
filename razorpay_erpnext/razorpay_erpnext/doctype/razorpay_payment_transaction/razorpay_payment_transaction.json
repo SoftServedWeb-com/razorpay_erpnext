@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "autoincrement",
+ "autoname": "field:payment_id",
  "creation": "2025-02-17 00:17:35.386294",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -13,12 +13,17 @@
   {
    "fieldname": "payment_id",
    "fieldtype": "Data",
-   "label": "Payment ID"
+   "in_list_view": 1,
+   "label": "Payment ID",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "payment_link",
    "fieldtype": "Data",
-   "label": "Payment Link"
+   "in_list_view": 1,
+   "label": "Payment Link",
+   "reqd": 1
   },
   {
    "default": "Unpaid",
@@ -30,11 +35,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-17 00:20:23.195808",
+ "modified": "2025-02-17 09:09:17.499594",
  "modified_by": "Administrator",
  "module": "Razorpay ERPNext",
  "name": "Razorpay Payment Transaction",
- "naming_rule": "Autoincrement",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

@@ -130,7 +130,7 @@ after_install = "razorpay_erpnext.setup.setup_razorpay_erpnext"
 # Override standard doctype classes
 
 override_doctype_class = {
-	"Sales Invoice": "razorpay_erpnext.custom_doctype.sales_invoice.RazorpaySalesInvoice"
+	"Sales Invoice": "razorpay_erpnext.razorpay_erpnext.custom_doctype.sales_invoice.RazorpaySalesInvoice"
 }
 
 # Document Events

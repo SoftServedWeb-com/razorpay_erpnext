@@ -58,7 +58,6 @@ def handle_payment():
             # Update payment details
             doc.db_set("status", "Paid",commit=True)
             doc.db_set('docstatus', 1, commit=True)
-            doc.add_comment("Edit", text=f"Payment captured via Razorpay (Payment ID: {payment_id})")
             doc.submit()
         else:
             print(f"Sales Invoice not found for Razorpay Payment ID: {payment_id}")

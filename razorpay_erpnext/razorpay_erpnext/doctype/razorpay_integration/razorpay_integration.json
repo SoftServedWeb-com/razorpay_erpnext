@@ -11,23 +11,30 @@
   "column_break_apgc",
   "pos_profile",
   "payment_mode",
-  "razorpay_account"
+  "razorpay_account",
+  "reciever_account"
  ],
  "fields": [
   {
    "fieldname": "razorpay_api_id",
    "fieldtype": "Password",
-   "label": "RAZORPAY API ID"
+   "in_list_view": 1,
+   "label": "RAZORPAY API ID",
+   "reqd": 1
   },
   {
    "fieldname": "razorpay_api_secret",
    "fieldtype": "Password",
-   "label": "RAZORPAY API SECRET"
+   "in_list_view": 1,
+   "label": "RAZORPAY API SECRET",
+   "reqd": 1
   },
   {
    "fieldname": "razorpay_webhook_secret",
    "fieldtype": "Password",
-   "label": "RAZORPAY WEBHOOK SECRET"
+   "in_list_view": 1,
+   "label": "RAZORPAY WEBHOOK SECRET",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_apgc",
@@ -46,16 +53,27 @@
    "options": "Mode of Payment"
   },
   {
+   "description": "This is the account from where money debits",
    "fieldname": "razorpay_account",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "RAZORPAY_ACCOUNT",
-   "options": "Account"
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "description": "This the account to where the money deposits",
+   "fieldname": "reciever_account",
+   "fieldtype": "Link",
+   "label": "RECIEVER_ACCOUNT",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-18 00:27:18.650650",
+ "modified": "2025-02-18 04:01:32.324932",
  "modified_by": "Administrator",
  "module": "Razorpay ERPNext",
  "name": "Razorpay integration",

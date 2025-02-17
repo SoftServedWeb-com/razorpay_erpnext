@@ -2,10 +2,9 @@ import frappe
 import razorpay
 import json
 from frappe import _
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(allow_guest=True,methods=['POST'])
 def handle_payment():
-    print("*"*50)
-    print("API Called")
+    print("Handling payment")
     # Get Razorpay signature from request headers
     signature = frappe.request.headers.get("X-Razorpay-Signature")
     if not signature:

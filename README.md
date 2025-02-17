@@ -21,5 +21,13 @@ To configure the Razorpay Integration, follow these steps:
     - `RAZORPAY_KEY_ID`
     - `RAZORPAY_KEY_SECRET`
     - `RAZORPAY_WEBHOOK_SECRET`
-3. For the webhook, use the following URL: `https://<site-name>/api/method/razorpay_erpnext.razorpay_erpnext.api.razorpay_webhook.handle_payment`. Ensure the event `paymentlink.paid` is set.
-4. Create an account for Razorpay money transfer and configure this account in the Razorpay Integration Doctype.
+3. For the webhook, use the following URL: 
+    ```url
+    https://<site-name>/api/method/razorpay_erpnext.razorpay_erpnext.api.razorpay_webhook.handle_payment
+    ```  
+    Ensure the event `paymentlink.paid` is set.
+4. Create two accounts in the Razorpay Integration Doctype:
+    - `Razorpay Account`: This is where the money is debited from
+    - `Receiver Account`: This is where the money is credited to
+    This is because once the sales invoice is credited to sales and debited from debtors (I assume customer)
+5. Create an account for Razorpay money transfer and configure this account in the Razorpay Integration Doctype.

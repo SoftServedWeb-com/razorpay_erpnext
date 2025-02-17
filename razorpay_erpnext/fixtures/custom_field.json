@@ -571,7 +571,7 @@
  },
  {
   "allow_in_quick_entry": 0,
-  "allow_on_submit": 0,
+  "allow_on_submit": 1,
   "bold": 0,
   "collapsible": 0,
   "collapsible_depends_on": null,
@@ -603,7 +603,7 @@
   "length": 0,
   "link_filters": null,
   "mandatory_depends_on": null,
-  "modified": "2025-02-17 12:07:15.248070",
+  "modified": "2025-02-18 01:54:43.589624",
   "module": "Razorpay ERPNext",
   "name": "Sales Invoice-custom_razorpay_transaction",
   "no_copy": 0,

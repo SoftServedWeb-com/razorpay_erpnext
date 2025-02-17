@@ -74,8 +74,9 @@ class RazorpaySalesInvoice(HealthcareSalesInvoice):
             "payment_link": link['short_url'],
         })
         transaction.insert()
-        self.save()
-
+        
         # Update the Sales Invoice with the transaction details
         self.razorpay_payment_transaction = transaction.name
+        self.save()
+        
         

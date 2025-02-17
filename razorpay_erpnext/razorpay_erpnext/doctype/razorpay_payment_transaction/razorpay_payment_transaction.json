@@ -30,12 +30,12 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Unpaid\nPaid"
+   "options": "Unpaid\nPaid\nError\nModified"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-17 09:09:17.499594",
+ "modified": "2025-02-17 13:30:24.801101",
  "modified_by": "Administrator",
  "module": "Razorpay ERPNext",
  "name": "Razorpay Payment Transaction",

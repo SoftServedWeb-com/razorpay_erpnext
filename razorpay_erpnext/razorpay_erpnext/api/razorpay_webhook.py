@@ -4,32 +4,31 @@ import json
 from frappe import _
 @frappe.whitelist(allow_guest=True,methods=['POST'])
 def handle_payment():
-    print("Handling payment")
+    frappe.log("Razorpay Webhook API triggered")
     # Get Razorpay signature from request headers
     signature = frappe.request.headers.get("X-Razorpay-Signature")
     if not signature:
         print("Signature not found")
         frappe.log_error("Razorpay Signature not found", f'Unknown request from:\n Address: {frappe.request.remote_addr}\n Method: {frappe.request.method}\n Data: {frappe.request.data}\n Origin: {frappe.request.headers.get("Origin")}')
         return {"status": "Signature not found"}
-    
     # Get Razorpay configuration
     config = frappe.get_doc("Razorpay integration")
-    if not config.razorpay_key_id or not config.razorpay_key_secret:
-        print("Razorpay Integration is not configured")
-        frappe.throw(("Razorpay Integration is not configured"))
-
+    try:
+        if not config.razorpay_api_id or not config.razorpay_api_secret:
+            raise ValueError("Razorpay Integration is not configured")
+    except Exception as e:
+        print(str(e))
+        frappe.log_error(_("Razorpay Integration is not configured"))
     # Initialize Razorpay client
     client = razorpay.Client(auth=(config.get_password('razorpay_api_id'), config.get_password('razorpay_api_secret')))
     if not client:
-        frappe.throw(_("Could not connect to Razorpay"))
-
+        frappe.log_error(_("Could not connect to Razorpay"))
     # Authenticate the webhook request
     authentic = client.utility.verify_webhook_signature(frappe.request.get_data(as_text=True), signature, config.get_password('razorpay_webhook_secret'))
     if not authentic:
         print("Signature not authentic")
         frappe.log_error("Razorpay Signature not authentic", f'Unknown request from:\n Address: {frappe.request.remote_addr}\n Method: {frappe.request.method}\n Data: {frappe.request.data}\n Origin: {frappe.request.headers.get("Origin")}')
         return {"status": "Signature not authentic"}
-    
      # Process the event
     event = json.loads(frappe.request.get_data(as_text=True))
     if event["event"] == "payment_link.paid":

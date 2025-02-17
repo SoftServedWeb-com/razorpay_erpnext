@@ -1,7 +1,10 @@
+import json
+
 import frappe
 import razorpay
-import json
 from frappe import _
+
+
 @frappe.whitelist(allow_guest=True,methods=['POST'])
 def handle_payment():
     frappe.log("Razorpay Webhook API triggered")
@@ -57,11 +60,10 @@ def handle_payment():
             doc = frappe.get_doc("Sales Invoice", invoice[0].name)
             # Update payment details
             doc.db_set("status", "Paid",commit=True)
-            create_payment_entry(doc,config)
             # doc.db_set("outstanding_amount", 0, commit=True)
             
             # Process GL Entries
-            # process_gl_entries(doc,config.razorpay_account)
+            process_gl_entries(doc,config.razorpay_account)
             # doc.db_set('docstatus', 1, commit=True) # it should generate after submit
             doc.submit()
         else:
@@ -101,27 +103,31 @@ def process_gl_entries(invoice, razorpay_account):
     # Create GL Entries (ensure entries are balanced)
     make_gl_entries(gl_entries, cancel=False, update_outstanding='No')
 
-def create_payment_entry(doc,config):
-     payment_entry = frappe.new_doc("Payment Entry")
-     payment_entry.payment_type = "Receive"
-     payment_entry.party_type = "Customer"
-     payment_entry.party = doc.customer
-     payment_entry.company = doc.company
-     payment_entry.paid_from = "Debtors - SSW"  # ⭐ Your Receivable Account
-     payment_entry.paid_to = config.razorpay_account  # Razorpay Bank Account (e.g., "Razorpay - SSW")
-     payment_entry.paid_amount = doc.grand_total
-     payment_entry.received_amount = doc.grand_total  # Mandatory
-     payment_entry.source_exchange_rate = 1.0  # Required if multi-currency
-     payment_entry.reference_no = doc.razorpay_payment_transaction  # Razorpay Payment ID
-     payment_entry.reference_date = frappe.utils.nowdate()
-     # Set account currencies (replace "INR" with your company currency)
-     payment_entry.paid_from_account_currency = "INR"
-     payment_entry.paid_to_account_currency = "INR"
-     # Link to Sales Invoice
-     payment_entry.append("references", {
-         "reference_doctype": "Sales Invoice",
-         "reference_name": doc.name,
-         "allocated_amount": doc.grand_total
-     })
-     payment_entry.insert()
-     payment_entry.submit()
+
+
+# not working
+# def create_payment_entry(doc,config):
+#      payment_entry = frappe.new_doc("Payment Entry")
+#      payment_entry.payment_type = "Receive"
+#      payment_entry.party_type = "Customer"
+#      payment_entry.party = doc.customer
+#      payment_entry.company = doc.company
+#      payment_entry.paid_from = "Debtors - SSW"  # ⭐ Your Receivable Account
+#      payment_entry.paid_to = config.razorpay_account  # Razorpay Bank Account (e.g., "Razorpay - SSW")
+#      payment_entry.paid_amount = doc.grand_total
+#      payment_entry.received_amount = doc.grand_total  # Mandatory
+#      payment_entry.source_exchange_rate = 1.0  # Required if multi-currency
+#      payment_entry.reference_no = doc.razorpay_payment_transaction  # Razorpay Payment ID
+#      payment_entry.reference_date = frappe.utils.nowdate()
+#      # Set account currencies (replace "INR" with your company currency)
+#      payment_entry.paid_from_account_currency = "INR"
+#      payment_entry.paid_to_account_currency = "INR"
+#      # Link to Sales Invoice
+#      payment_entry.append("references", {
+#          "reference_doctype": "Sales Invoice",
+#          "reference_name": doc.name,
+#          "allocated_amount": doc.grand_total
+#      })
+#      payment_entry.insert(ignore_permissions=True)
+#      payment_entry.name
+#      payment_entry.submit()
